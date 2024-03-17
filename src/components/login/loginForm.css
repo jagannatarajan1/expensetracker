@@ -1,0 +1,8 @@
+p {
+  cursor: pointer;
+  margin-left: 20px;
+  margin-top: -20%;
+}
+p:hover {
+  color: blue;
+}

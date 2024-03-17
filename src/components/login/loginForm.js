@@ -1,13 +1,20 @@
 import { Button } from "react-bootstrap";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import "./loginForm.css";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+  const nav = useNavigate();
+  const [login, setlogin] = useState(false);
   const email = useRef();
   const password = useRef();
   const confirmpassword = useRef();
+  const already = () => {
+    setlogin((preState) => !preState);
+  };
   const formhandler = (event) => {
     event.preventDefault();
     const enterdemail = email.current.value;
@@ -18,24 +25,32 @@ const LoginForm = () => {
     } else {
       console.log(enterdemail);
       console.log(enteredpassword);
-      fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBc0lCG-mS1XwpGRxe_FQ3xt9ZTzSwTEmw",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email: enterdemail,
-            password: enteredpassword,
-            returnSecureToken: true,
-          }),
+      let url;
+      if (login) {
+        url =
+          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBc0lCG-mS1XwpGRxe_FQ3xt9ZTzSwTEmw";
+      } else {
+        url =
+          "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBc0lCG-mS1XwpGRxe_FQ3xt9ZTzSwTEmw";
+      }
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          email: enterdemail,
+          password: enteredpassword,
+          returnSecureToken: true,
+        }),
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => {
           res.json().then((data) => {
             console.log(data);
+            nav("/");
+
+            localStorage.setItem("IdToken", JSON.stringify(data.idToken));
           });
         })
         .catch((error) => console.log(error));
@@ -56,7 +71,6 @@ const LoginForm = () => {
               <Form.Control placeholder="email@example.com" ref={email} />
             </Col>
           </Form.Group>
-
           <Form.Group
             as={Row}
             className="mb-3"
@@ -71,23 +85,42 @@ const LoginForm = () => {
               />
             </Col>
           </Form.Group>
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="confirmformPlaintextPassword"
-          >
-            <Form.Label>Confirm Password</Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="password"
-                placeholder="Confirm Password"
-                ref={confirmpassword}
-              />
-            </Col>
-          </Form.Group>
-          <Button onClick={formhandler}>Login In</Button>
+          {!login && (
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="confirmformPlaintextPassword"
+            >
+              <Form.Label>Confirm Password</Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm Password"
+                  ref={confirmpassword}
+                />
+              </Col>
+            </Form.Group>
+          )}
+          <div className="d-grid gap-4 col-9 mx-3">
+            {!login && (
+              <Button onClick={formhandler} variant="primary">
+                SignUp
+              </Button>
+            )}
+            {login && (
+              <Button onClick={formhandler} variant="primary">
+                SignIn
+              </Button>
+            )}
+          </div>
         </Form>
       </div>
+      <p
+        className="already container d-flex justify-content-center "
+        onClick={already}
+      >
+        {login ? "Dont't have an account?SignUp" : "Already have a Account"}
+      </p>
     </React.Fragment>
   );
 };
