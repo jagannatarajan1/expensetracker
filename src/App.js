@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import LoginForm from "./components/login/loginForm";
+import Home from "./pages/Home";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Context from "./components/store/cart-context";
+import Profile from "./pages/Profile";
 
 function App() {
+  const contxt = useContext(Context);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            contxt.UserLogIn ? <Home /> : <Navigate to="/loginpage"></Navigate>
+          }
+        />
+        <Route path="/loginpage" element={<LoginForm />} />
+        <Route path="/yourprofile" element={<Profile />} />
+      </Routes>
+    </React.Fragment>
   );
 }
 
