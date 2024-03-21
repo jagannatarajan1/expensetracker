@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
@@ -11,15 +11,39 @@ import { PiGlobe } from "react-icons/pi";
 import Context from "../components/store/cart-context";
 
 const Profile = (props) => {
+  const [profileupdated, setProfileUpdated] = useState(null);
   const fullname = useRef();
   const profilepictureUrl = useRef();
   const contxt = useContext(Context);
+
+  useEffect(() => {
+    const fetching = async () => {
+      try {
+        const response = await fetch(
+          "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBc0lCG-mS1XwpGRxe_FQ3xt9ZTzSwTEmw",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              idToken: contxt.logintoken,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        setProfileUpdated(data.users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetching();
+  }, [contxt.logintoken]);
+
   const FormsubmitHandler = async (event) => {
     event.preventDefault();
     const enteredfullname = fullname.current.value;
     const enteredprofilepictureUrl = profilepictureUrl.current.value;
-    console.log(enteredfullname, enteredprofilepictureUrl, contxt.logintoken);
-    console.log(contxt);
     try {
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBc0lCG-mS1XwpGRxe_FQ3xt9ZTzSwTEmw",
@@ -37,14 +61,21 @@ const Profile = (props) => {
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to update profile");
+        console.log(response);
       }
       const data = await response.json();
-      console.log(data);
+      setProfileUpdated(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // Default values for displayName and photoUrl
+  const defaultDisplayName =
+    profileupdated && profileupdated[0] ? profileupdated[0].displayName : "";
+  const defaultPhotoUrl =
+    profileupdated && profileupdated[0] ? profileupdated[0].photoUrl : "";
+
   return (
     <React.Fragment>
       <Navbar className="bg-body-tertiary border-bottom border-dark border-1">
@@ -74,7 +105,11 @@ const Profile = (props) => {
                 <p className="mt-3 me-2">Full Name:</p>
 
                 <div>
-                  <Form.Control placeholder="Full name" ref={fullname} />
+                  <Form.Control
+                    placeholder="Full name"
+                    ref={fullname}
+                    defaultValue={defaultDisplayName}
+                  />
                 </div>
               </div>
             </Col>
@@ -87,6 +122,7 @@ const Profile = (props) => {
                   <Form.Control
                     placeholder="Enter the profile picture URL"
                     ref={profilepictureUrl}
+                    defaultValue={defaultPhotoUrl}
                   />
                 </div>
               </div>
