@@ -11,6 +11,7 @@ const LoginForm = () => {
   const nav = useNavigate();
   const contxt = useContext(Context);
   const [login, setlogin] = useState(false);
+  const [error, seterror] = useState(false);
   // const [redirect, setredirect] = useState(false);
   const email = useRef();
   const password = useRef();
@@ -53,7 +54,14 @@ const LoginForm = () => {
       },
     })
       .then((res) => {
+        if (!res.ok) {
+          seterror(true);
+        }
+
         res.json().then((data) => {
+          if (error) {
+            alert(data.message);
+          }
           console.log(data);
           contxt.login(data);
 
@@ -61,7 +69,7 @@ const LoginForm = () => {
           nav("/");
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => alert(error));
   };
 
   return (

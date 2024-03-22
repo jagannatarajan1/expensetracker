@@ -3,13 +3,13 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
 import "./Home.css";
+import Verifyemail from "./Verifyemail";
 const Home = (props) => {
   return (
     <React.Fragment>
       <Navbar className="bg-body-tertiary border-bottom border-dark border-1">
         <Container>
           <Navbar.Brand>Welcome to Expense Tracker!!!</Navbar.Brand>
-          <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <div className="bgprofilecolor">
               <Navbar.Text>
@@ -33,7 +33,9 @@ const Home = (props) => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <br />
+      <div className="verify-email-container">
+        <Verifyemail />
+      </div>
     </React.Fragment>
   );
 };
