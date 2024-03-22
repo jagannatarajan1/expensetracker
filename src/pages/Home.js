@@ -1,10 +1,16 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Home.css";
 import Verifyemail from "./Verifyemail";
+import { Button } from "react-bootstrap";
 const Home = (props) => {
+  const nav = useNavigate();
+  const logoutHandler = () => {
+    localStorage.clear();
+    nav("/loginpage");
+  };
   return (
     <React.Fragment>
       <Navbar className="bg-body-tertiary border-bottom border-dark border-1">
@@ -30,6 +36,9 @@ const Home = (props) => {
                 </NavLink>
               </Navbar.Text>
             </div>
+            <Button className="ms-3" onClick={logoutHandler}>
+              Logout
+            </Button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
