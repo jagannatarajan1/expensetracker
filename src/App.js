@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Context from "./components/store/cart-context";
 import Profile from "./pages/Profile";
-
+import Forgotpassword from "./pages/Forgetpassword";
 function App() {
   const contxt = useContext(Context);
   return (
@@ -19,6 +19,7 @@ function App() {
         />
         <Route path="/loginpage" element={<LoginForm />} />
         <Route path="/yourprofile" element={<Profile />} />
+        <Route path="/Forgotpassword" element={<Forgotpassword />} />
       </Routes>
     </React.Fragment>
   );

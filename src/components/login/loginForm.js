@@ -19,6 +19,9 @@ const LoginForm = () => {
   const already = () => {
     setlogin((preState) => !preState);
   };
+  const forgothandler = () => {
+    nav("/Forgotpassword");
+  };
   const formhandler = (event) => {
     event.preventDefault();
     const enterdemail = email.current.value;
@@ -116,6 +119,10 @@ const LoginForm = () => {
               </Col>
             </Form.Group>
           )}
+          <div className="pt-4  ps-5">
+            <p onClick={forgothandler}>Forgot password?</p>
+          </div>
+
           <div className="d-grid gap-4 col-9 mx-3">
             {!login && (
               <Button onClick={formhandler} variant="primary">
