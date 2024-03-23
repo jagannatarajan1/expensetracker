@@ -27,14 +27,6 @@ const Formforexpensetracker = () => {
           <Form.Label>Enter the money you spend</Form.Label>
           <Form.Control type="number" placeholder="1000" ref={moneyspend} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formGroupPassword">
-          <Form.Label>Enter the description of the expense</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="describe the expense"
-            ref={description}
-          />
-        </Form.Group>
         <Form.Group controlId="formGridcategory">
           <Form.Label>category</Form.Label>
           <Form.Select defaultValue="Food" ref={category}>
@@ -45,6 +37,15 @@ const Formforexpensetracker = () => {
             <option>Gym membership</option>
           </Form.Select>
         </Form.Group>
+        <Form.Group className="mb-3" controlId="formGroupPassword">
+          <Form.Label>Enter the description of the expense</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="describe the expense"
+            ref={description}
+          />
+        </Form.Group>
+
         <Button className="mt-3" onClick={expensetrackerhandler}>
           Add Expense
         </Button>

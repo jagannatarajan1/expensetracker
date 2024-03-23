@@ -9,11 +9,27 @@ const Contextprovider = (props) => {
     console.log(data);
     localStorage.setItem("IdToken", JSON.stringify(data.idToken));
   };
-  const expenselisthandler = (props) => {
-    // const adding =
-    setaddexpenselist([...addexpenselist, props]);
-    console.log(addexpenselist);
-    console.log(props);
+  const expenselisthandler = async (props) => {
+    try {
+      const response = await fetch(
+        "https://expensetracker-c084c-default-rtdb.firebaseio.com/expenses.json",
+        {
+          method: "POST",
+          body: JSON.stringify({ props }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        setaddexpenselist([...addexpenselist, props]);
+      }
+      const data = await response.json();
+
+      console.log(data);
+    } catch (error) {
+      alert(error);
+    }
   };
   const loginid = localStorage.getItem("IdToken");
   // eslint-disable-next-line
