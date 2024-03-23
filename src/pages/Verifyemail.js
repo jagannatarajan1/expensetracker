@@ -24,40 +24,35 @@ function Verifyemail() {
       const data = await response.json();
       console.log(data);
       setVerify(data);
+      alert(
+        "Check your email, you might have received a verification link.Click on it to verify."
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <Container className="m-5 border pt-5 pb-5">
+    <React.Fragment>
       {!verify && (
-        <div>
-          <Row className="text-center pb-2">
-            <Col>
-              <h6> Please Verify Your Email </h6>
-            </Col>
-          </Row>
-          <Row className="justify-content-center">
-            {" "}
-            {/* Adjusted */}
-            <Col xs="auto">
-              <Button onClick={verifyemailHandler}>Click to verify</Button>
-            </Col>
-          </Row>
-        </div>
+        <Container className="m-5 border pt-5 pb-5">
+          <div>
+            <Row className="text-center pb-2">
+              <Col>
+                <h6> Please Verify Your Email </h6>
+              </Col>
+            </Row>
+            <Row className="justify-content-center">
+              {" "}
+              {/* Adjusted */}
+              <Col xs="auto">
+                <Button onClick={verifyemailHandler}>Click to verify</Button>
+              </Col>
+            </Row>
+          </div>
+        </Container>
       )}
-      {verify && (
-        <Row className="text-center">
-          <Col>
-            <h6>
-              Check your email, you might have received a verification link.
-              Click on it to verify.
-            </h6>
-          </Col>
-        </Row>
-      )}
-    </Container>
+    </React.Fragment>
   );
 }
 

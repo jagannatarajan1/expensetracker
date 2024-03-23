@@ -5,6 +5,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./Home.css";
 import Verifyemail from "./Verifyemail";
 import { Button } from "react-bootstrap";
+import Listofexpense from "../components/login/Formforexpensetracker/Listofexpense";
+import Formforexpensetracker from "../components/login/Formforexpensetracker/Formforexpensetracker";
 const Home = (props) => {
   const nav = useNavigate();
   const logoutHandler = () => {
@@ -13,7 +15,7 @@ const Home = (props) => {
   };
   return (
     <React.Fragment>
-      <Navbar className="bg-body-tertiary border-bottom border-dark border-1">
+      <Navbar className="bg-body-tertiary border-bottom border-dark border-1 d-flex">
         <Container>
           <Navbar.Brand>Welcome to Expense Tracker!!!</Navbar.Brand>
           <Navbar.Collapse className="justify-content-end">
@@ -45,6 +47,8 @@ const Home = (props) => {
       <div className="verify-email-container">
         <Verifyemail />
       </div>
+      <Formforexpensetracker />
+      <Listofexpense />
     </React.Fragment>
   );
 };
