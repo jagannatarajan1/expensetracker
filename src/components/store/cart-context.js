@@ -5,5 +5,9 @@ const Context = React.createContext({
   UserLogIn: false,
   expenselistfunction: (expense) => {},
   expenselist: [],
+  editelementfunction: (expense) => {},
+  editelement: [],
+  reload: "",
+  reloadfunction: (props) => {},
 });
 export default Context;

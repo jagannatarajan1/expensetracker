@@ -1,35 +1,78 @@
-import React, { useContext, useRef } from "react";
-import { Button, Container } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Container, Form } from "react-bootstrap";
 import Context from "../../store/cart-context";
+
 const Formforexpensetracker = () => {
   const contxt = useContext(Context);
-  const moneyspend = useRef();
-  const description = useRef();
-  const category = useRef();
+  const edit = contxt.editelement;
+  console.log(edit);
+
+  const [updatemoney, setupdatemoney] = useState("");
+  const [updatecategory, setupdatecategory] = useState("Food");
+
+  const [updatedescription, setupdatedescription] = useState("");
+  const [updateid, setupdateid] = useState("");
+  useEffect(() => {
+    if (edit) {
+      console.log("kakak");
+      setupdatemoney(edit.enterdmoneyspend);
+      setupdatecategory(edit.enterdcategory);
+      setupdatedescription(edit.enterddescription);
+      setupdateid(edit.id);
+    }
+  }, [edit]);
+
+  const moneyhandler = (event) => {
+    setupdatemoney(event.target.value);
+  };
+
+  const categoryhandler = (event) => {
+    setupdatecategory(event.target.value);
+  };
+
+  const descriptionhandler = (event) => {
+    setupdatedescription(event.target.value);
+  };
+  console.log(updatemoney, updatecategory, updatedescription);
+
   const expensetrackerhandler = (event) => {
     event.preventDefault();
-    const enterdmoneyspend = moneyspend.current.value;
-    const enterddescription = description.current.value;
-    const enterdcategory = category.current.value;
+    const enterdmoneyspend = updatemoney;
+    const enterddescription = updatedescription;
+    const enterdcategory = updatecategory;
+    const id = updateid;
     const enterdexpese = {
       enterdmoneyspend,
       enterddescription,
       enterdcategory,
+      id,
     };
+
     contxt.expenselistfunction(enterdexpese);
-    // console.log(enterdexpese);
+    // if (edit) {
+    //   contxt.editelementfunction();
+    // }
+    console.log("kakak");
+    setupdatemoney("");
+    setupdatecategory("");
+    setupdatedescription("");
   };
+
   return (
     <Container className="w-50">
       <Form>
         <Form.Group className="mb-3" controlId="formGroupEmail">
           <Form.Label>Enter the money you spend</Form.Label>
-          <Form.Control type="number" placeholder="1000" ref={moneyspend} />
+          <Form.Control
+            type="number"
+            placeholder="Enter the money"
+            value={updatemoney}
+            onChange={moneyhandler}
+          />
         </Form.Group>
         <Form.Group controlId="formGridcategory">
-          <Form.Label>category</Form.Label>
-          <Form.Select defaultValue="Food" ref={category}>
+          <Form.Label>Category</Form.Label>
+          <Form.Select value={updatecategory} onChange={categoryhandler}>
             <option>Food</option>
             <option>Petrol</option>
             <option>Salary</option>
@@ -41,16 +84,18 @@ const Formforexpensetracker = () => {
           <Form.Label>Enter the description of the expense</Form.Label>
           <Form.Control
             type="text"
-            placeholder="describe the expense"
-            ref={description}
+            placeholder="Describe the expense"
+            value={updatedescription}
+            onChange={descriptionhandler}
           />
         </Form.Group>
 
         <Button className="mt-3" onClick={expensetrackerhandler}>
-          Add Expense
+          {edit ? "Update Expense" : "Add Expense"}
         </Button>
       </Form>
     </Container>
   );
 };
+
 export default Formforexpensetracker;
